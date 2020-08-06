@@ -1,9 +1,19 @@
-const path = require("path");
-const webpack = require("webpack");
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const DefinePlugin = new webpack.DefinePlugin({
+  'process.env': {
+    NODE_ENV: JSON.stringify('development')
+  },
+});
+
+const HTMLWebpackPluginConfig = new HtmlWebpackPlugin({ template: 'public/index.html', filename: 'index.html' });
 
 module.exports = {
-  entry: "./src/index.js",
-  mode: "development",
+  entry: './src/index.js',
+  mode: 'development',
+  devtool: 'eval-source-map',
   module: {
     rules: [
       {
@@ -11,30 +21,44 @@ module.exports = {
         exclude: /(node_modules)/,
         use: [
           {
-            loader: "babel-loader",
+            loader: 'babel-loader',
             options: {
-              presets: ["@babel/env"]
+              presets: ['@babel/env']
             }
           },
           {
-            loader: "eslint-loader"
+            loader: 'eslint-loader'
           }
         ]
+      },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
       }
     ]
   },
-  resolve: { extensions: ["*", ".js", ".jsx"] },
+  resolve: {
+    alias: {
+      '~': path.resolve(__dirname, 'src/')
+    }
+  },
   output: {
-    path: path.resolve(__dirname, "dist/"),
-    publicPath: "/",
-    filename: "bundle.js"
+    path: path.resolve(__dirname, 'dist/'),
+    publicPath: '/',
+    filename: 'bundle.js'
   },
   devServer: {
-    contentBase: path.join(__dirname, "public/"),
+    contentBase: path.join(__dirname, 'public/'),
+    host: '0.0.0.0',
     port: 3000,
-    publicPath: "http://localhost:3000/dist/",
+    writeToDisk: true,
     historyApiFallback: true,
+    disableHostCheck: true,
     hot: true
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()]
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    DefinePlugin,
+    HTMLWebpackPluginConfig
+  ]
 };

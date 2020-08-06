@@ -1,0 +1,16 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "React Ionic",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000
+    }
+  },
+  "cordova": {},
+  "server": {
+    "url": "http://192.168.0.4:3000"
+  }
+}

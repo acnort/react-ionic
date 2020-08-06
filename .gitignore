@@ -2,3 +2,6 @@ node_modules
 .vscode
 .git
 dist
+android
+ios
+package-lock.json
